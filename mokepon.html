@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mokepon</title>
+    <script src="./js/mokepon.js"></script>
+</head>
+<body>
+    <h1>MOKEPON 🔥💧🌱</h1>
+
+    <section id="pets">
+        <h2>Elige tu Mokepon:</h2>
+
+        <!-- Mokepones -->
+        <input type="radio" id="squirtle" name="mokepon">
+        <label for="squirtle">Squirtle</label>
+
+        <input type="radio" id="charmander" name="mokepon">
+        <label for="charmander">Charmander</label>
+
+        <input type="radio" id="bulbasaur" name="mokepon">
+        <label for="bulbasaur">Bulbasaur</label>
+
+        <!-- <input type="radio" id="langostelvis" name="mokepon">
+        <label>Langostelvis</label>
+
+        <input type="radio" id="tucapalma" name="mokepon">
+        <label>Tucapalma</label>
+
+        <input type="radio" id="pydos" name="mokepon">
+        <label>Pydos</label> -->
+
+        <button id="button-mokepon">Seleccionar</button>
+    </section>
+
+    <section id="attack">
+        <h2>Elige tu Ataque:</h2>
+
+        <p>Tu mokepon <span id="mokepon-player"></span> tiene <span id="lives-player">3</span> vidas</p>
+        <p>El mokepon <span id="mokepon-rival"></span> del rival tiene <span id="lives-rival">3</span> vidas</p>
+
+        <div>
+            <button id="button-fire">Fire 🔥</button>
+            <button id="button-water">Water 💧</button>
+            <button id="button-ground">Ground 🌱</button>
+        </div>
+    </section>
+
+    <section id="messages">
+        
+    </section>
+
+    <section id="reset">
+        <button id="button-reset">Reiniciar</button>
+    </section>
+</body>
+</html>
