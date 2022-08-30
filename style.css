@@ -1,0 +1,72 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 62.5%;
+    font-family: 'Poppins', sans-serif;
+    background-color: #065A9C;
+}
+
+#pets {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    color: white;
+    margin: 40px;
+    font-size: 3.2rem;
+    
+}
+
+.subtitle {
+    color: white;
+    margin-bottom: 30px;
+    font-size: 2.4rem;
+}
+
+.cards {
+    display: flex;
+    gap: 40px;
+}
+
+.pokemon-card {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 350px;
+    height: 200px;
+    background-color: #0077BC;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.pokemon-card p {
+    color: white;
+    font-size: 1.6rem;
+}
+
+.pokemon-card img {
+    width: 140px;
+}
+
+input {
+    display: none;
+}
+
+#button-mokepon {
+    margin-top: 60px;
+    width: 200px;
+    height: 60px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #0077BC;
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+}

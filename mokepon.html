@@ -5,37 +5,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mokepon</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="./js/mokepon.js"></script>
 </head>
 <body>
-    <h1>MOKEPON 🔥💧🌱</h1>
-
     <section id="pets">
-        <h2>Elige tu Mokepon:</h2>
+        <h1 class="title">MOKEPON 🔥💧🌱</h1>
+
+        <h2 class="subtitle">Elige tu Mokepon:</h2>
 
         <!-- Mokepones -->
-        <input type="radio" id="squirtle" name="mokepon">
-        <label for="squirtle">Squirtle</label>
-
-        <input type="radio" id="charmander" name="mokepon">
-        <label for="charmander">Charmander</label>
-
-        <input type="radio" id="bulbasaur" name="mokepon">
-        <label for="bulbasaur">Bulbasaur</label>
-
-        <!-- <input type="radio" id="langostelvis" name="mokepon">
-        <label>Langostelvis</label>
-
-        <input type="radio" id="tucapalma" name="mokepon">
-        <label>Tucapalma</label>
-
-        <input type="radio" id="pydos" name="mokepon">
-        <label>Pydos</label> -->
+        <div class="cards">
+            <input type="radio" id="squirtle" name="mokepon">
+            <label class="pokemon-card" for="squirtle">
+                <p>Squirtle</p>
+                <img src="./assets/img/squirtle.png" alt="Squirtle">
+            </label>
+    
+            <input type="radio" id="charmander" name="mokepon">
+            <label class="pokemon-card" for="charmander">
+                <p>Charmander</p>
+                <img src="./assets/img/charmander.png" alt="Charmander">
+            </label>
+    
+            <input type="radio" id="bulbasaur" name="mokepon">
+            <label class="pokemon-card" for="bulbasaur">
+                <p>Bulbasaur</p>
+                <img src="./assets/img/bulbasaur.png" alt="Bulbasaur">
+            </label>
+        </div>
 
         <button id="button-mokepon">Seleccionar</button>
     </section>
 
     <section id="attack">
+        <h1 class="title">MOKEPON 🔥💧🌱</h1>
+
         <h2>Elige tu Ataque:</h2>
 
         <p>Tu mokepon <span id="mokepon-player"></span> tiene <span id="lives-player">3</span> vidas</p>
