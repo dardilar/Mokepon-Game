@@ -44,24 +44,29 @@
     <section id="attack">
         <h1 class="title">MOKEPON 🔥💧🌱</h1>
 
-        <h2>Elige tu Ataque:</h2>
-
-        <p>Tu mokepon <span id="mokepon-player"></span> tiene <span id="lives-player">3</span> vidas</p>
-        <p>El mokepon <span id="mokepon-rival"></span> del rival tiene <span id="lives-rival">3</span> vidas</p>
+        <h2 class="subtitle">Elige tu Ataque:</h2>
 
         <div>
-            <button id="button-fire">Fire 🔥</button>
-            <button id="button-water">Water 💧</button>
-            <button id="button-ground">Ground 🌱</button>
+            <button id="button-fire" class="button-attack">Fire 🔥</button>
+            <button id="button-water" class="button-attack">Water 💧</button>
+            <button id="button-ground" class="button-attack">Ground 🌱</button>
         </div>
-    </section>
 
-    <section id="messages">
-        
-    </section>
+        <div id="messages">
+            <p id="result-combat"></p>
 
-    <section id="reset">
-        <button id="button-reset">Reiniciar</button>
+            <section id="reset">
+                <button id="button-reset">Reiniciar</button>
+            </section>
+        </div>
+
+        <div>
+            <div id="player-attacks"></div>
+            <div id="rival-attacks"></div>
+            <p>Tu mokepon <span id="mokepon-player"></span> tiene <span id="lives-player">3</span> vidas</p>
+            <p>El mokepon <span id="mokepon-rival"></span> del rival tiene <span id="lives-rival">3</span> vidas</p>
+        </div>
+
     </section>
 </body>
 </html>

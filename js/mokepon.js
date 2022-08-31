@@ -53,7 +53,7 @@ function selectMokeponRival() {
 //Selección Mokepon Jugador
 function selectMokeponPlayer() {
     let sectionSelectAttack = document.getElementById("attack");
-    sectionSelectAttack.style.display = "block"
+    sectionSelectAttack.style.display = "flex"
 
     let sectionSelectMokepon = document.getElementById("pets");
     sectionSelectMokepon.style.display = "none"
@@ -138,22 +138,26 @@ function combat(player, rival) {
 
 //Función Añadir Texto
 function createMessage() {
-    let messageSection = document.getElementById("messages")
+    let resultCombatSection = document.getElementById("result-combat")
+    let playerAttacksSection = document.getElementById("player-attacks")
+    let rivalAttacksSection = document.getElementById("rival-attacks")
 
-    let paragraph = document.createElement("p")
-    paragraph.innerHTML = `Tu Mokepon ataco con ${playerAttack}, El Mokepon rival ataco con ${rivalAttack} - ${result}`
+    let newPlayerAttack = document.createElement("p")
+    let newRivalAttack = document.createElement("p")
 
-    messageSection.appendChild(paragraph)
+    resultCombatSection.innerHTML = result
+    newPlayerAttack.innerHTML = `Tu Mokepon ataco con ${playerAttack}`
+    newRivalAttack.innerHTML = `El Mokepon rival ataco con ${rivalAttack}`
+
+    playerAttacksSection.appendChild(newPlayerAttack)
+    rivalAttacksSection.appendChild(newRivalAttack)
 }
 
 //Función Añadir Texto
 function createMessageEnd(combatResult) {
-    let messageSection = document.getElementById("messages")
+    let resultCombatSection = document.getElementById("result-combat")
 
-    let paragraph = document.createElement("p")
-    paragraph.innerHTML = combatResult
-
-    messageSection.appendChild(paragraph)
+    resultCombatSection.innerHTML = combatResult
 
     let inputFire = document.getElementById("button-fire");
     inputFire.disabled = true

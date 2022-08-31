@@ -26,7 +26,7 @@ body {
 
 .subtitle {
     color: white;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     font-size: 2.4rem;
 }
 
@@ -69,4 +69,41 @@ input {
     background-color: white;
     border: none;
     border-radius: 20px;
+}
+
+#attack {
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-attack {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border-color: transparent;
+    width: 200px;
+    font-size: 1.6rem;
+    font-family: 'Poppins', sans-serif;
+    margin-right: 40px;
+}
+
+#messages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2rem;
+    width: 380px;
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 20px;
+}
+
+#button-reset {
+    border: none;
+    color: #0077BC;
+    background-color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
 }
