@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <script src="./js/mokepon.js"></script>
 </head>
 <body>
     <section id="pets">
@@ -46,7 +45,7 @@
 
         <h2 class="subtitle">Elige tu Ataque:</h2>
 
-        <div>
+        <div class="choose-attacks">
             <button id="button-fire" class="button-attack">Fire 🔥</button>
             <button id="button-water" class="button-attack">Water 💧</button>
             <button id="button-ground" class="button-attack">Ground 🌱</button>
@@ -60,13 +59,21 @@
             </section>
         </div>
 
-        <div>
-            <div id="player-attacks"></div>
-            <div id="rival-attacks"></div>
-            <p>Tu mokepon <span id="mokepon-player"></span> tiene <span id="lives-player">3</span> vidas</p>
-            <p>El mokepon <span id="mokepon-rival"></span> del rival tiene <span id="lives-rival">3</span> vidas</p>
+        <div class="combat-attacks">
+            <div class="section-attack">
+                <p class="lives" id="lives-player">3</p>
+                <p class="name" id="mokepon-player"></p>
+                <div id="player-attacks"></div>
+            </div>
+
+            <div class="section-attack">
+                <p class="lives" id="lives-rival">3</p>
+                <p class="name" id="mokepon-rival"></p>
+                <div id="rival-attacks"></div>
+            </div>
         </div>
 
     </section>
+    <script src="./js/mokepon.js"></script>
 </body>
 </html>
