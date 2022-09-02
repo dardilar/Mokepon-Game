@@ -20,17 +20,78 @@ const spanRivalLives = document.getElementById("lives-rival");
 const resultCombatSection = document.getElementById("result-combat");
 const playerAttacksSection = document.getElementById("player-attacks");
 const rivalAttacksSection = document.getElementById("rival-attacks");
+const cardsContainer = document.getElementById("cardsContainer");
 
+let mokepones = [];
 let playerAttack;
 let rivalAttack;
+let mokeponOption;
 let result;
 let playerLives = 3;
 let rivalLives = 3;
 
 
+//Clase Mokepon
+class Mokepon {
+    constructor(nombre, foto, vida) {
+        this.nombre = nombre;
+        this.foto = foto;
+        this.vida = vida;
+        this.ataques = []
+    }
+}
+
+//Objeto squirtle
+let squirtle = new Mokepon('Squirtle', './assets/img/squirtle.png', 3);
+let charmander = new Mokepon('Charmander', './assets/img/charmander.png', 3);
+let bulbasaur = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 3);
+
+squirtle.ataques.push(
+    //Objetos Literales
+    {nombre: '💧', id: 'button-water'}, 
+    {nombre: '💧', id: 'button-water'}, 
+    {nombre: '💧', id: 'button-water'}, 
+    {nombre: '🔥', id: 'button-fire'}, 
+    {nombre: '🌱', id: 'button-ground'}, 
+)
+
+charmander.ataques.push(
+    //Objetos Literales
+    {nombre: '🔥', id: 'button-fire'},
+    {nombre: '🔥', id: 'button-fire'},
+    {nombre: '🔥', id: 'button-fire'},
+    {nombre: '💧', id: 'button-water'},
+    {nombre: '🌱', id: 'button-ground'},
+)
+
+bulbasaur.ataques.push(
+    //Objetos Literales
+    {nombre: '🌱', id: 'button-ground'},
+    {nombre: '🌱', id: 'button-ground'},
+    {nombre: '🌱', id: 'button-ground'},
+    {nombre: '💧', id: 'button-water'},
+    {nombre: '🔥', id: 'button-fire'},
+)
+
+mokepones.push(squirtle, charmander, bulbasaur);
+
+
 function startGame() {
     sectionSelectAttack.style.display = "none"
     sectionReset.style.display = "none"
+
+    mokepones.forEach((mokepon) => {
+        mokeponOption = `
+        <input type="radio" id="${mokepon.nombre}" name="mokepon">
+        <label class="pokemon-card" for="${mokepon.nombre}">
+            <p>${mokepon.nombre}</p>
+            <img src="${mokepon.foto}" alt="${mokepon.nombre}">
+        </label>
+        `
+
+        cardsContainer.innerHTML += mokeponOption
+    })
+
     buttonMokeponType.addEventListener("click", selectMokeponPlayer);
     inputFire.addEventListener("click", fireAttack);
     inputWater.addEventListener("click", waterAttack);
