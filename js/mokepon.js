@@ -1,30 +1,41 @@
+const sectionSelectAttack = document.getElementById("attack");
+const sectionReset = document.getElementById("reset");
+const buttonMokeponType = document.getElementById("button-mokepon");
+const inputFire = document.getElementById("button-fire");
+const inputWater = document.getElementById("button-water");
+const inputGround = document.getElementById("button-ground");
+const inputReset = document.getElementById("button-reset");
+
+const sectionSelectMokepon = document.getElementById("pets");
+const inputSquirtle = document.getElementById("squirtle");
+const inputCharmander = document.getElementById("charmander");
+const inputBulbasaur = document.getElementById("bulbasaur");
+const spanMokeponPlayer = document.getElementById("mokepon-player");
+
+const spanMokeponRival = document.getElementById("mokepon-rival");
+
+const spanPlayerLives = document.getElementById("lives-player");
+const spanRivalLives = document.getElementById("lives-rival");
+
+const resultCombatSection = document.getElementById("result-combat");
+const playerAttacksSection = document.getElementById("player-attacks");
+const rivalAttacksSection = document.getElementById("rival-attacks");
+
 let playerAttack;
 let rivalAttack;
 let result;
 let playerLives = 3;
 let rivalLives = 3;
 
+
 function startGame() {
-    let sectionSelectAttack = document.getElementById("attack");
     sectionSelectAttack.style.display = "none"
-
-    let sectionReset = document.getElementById("reset");
     sectionReset.style.display = "none"
-
-    let buttonMokeponType = document.getElementById("button-mokepon");
     buttonMokeponType.addEventListener("click", selectMokeponPlayer);
-
-    let inputFire = document.getElementById("button-fire");
     inputFire.addEventListener("click", fireAttack);
-
-    let inputWater = document.getElementById("button-water");
     inputWater.addEventListener("click", waterAttack);
-
-    let inputGround = document.getElementById("button-ground");
     inputGround.addEventListener("click", groundAttack);
-
-    let inputReset = document.getElementById("button-reset");
-    inputReset.addEventListener("click", resetGame)
+    inputReset.addEventListener("click", resetGame);
 }
 
 
@@ -37,7 +48,6 @@ function randomNumber(min, max) {
 
 //Selección Mokepon Rival
 function selectMokeponRival() {
-    let spanMokeponRival = document.getElementById("mokepon-rival")
     let randomMokepon = randomNumber(1,3);
 
     if(randomMokepon == 1) {
@@ -52,22 +62,14 @@ function selectMokeponRival() {
 
 //Selección Mokepon Jugador
 function selectMokeponPlayer() {
-    let sectionSelectAttack = document.getElementById("attack");
     sectionSelectAttack.style.display = "flex"
-
-    let sectionSelectMokepon = document.getElementById("pets");
     sectionSelectMokepon.style.display = "none"
 
-    let inputSquirtle = document.getElementById("squirtle").checked;
-    let inputCharmander = document.getElementById("charmander").checked;
-    let inputBulbasaur = document.getElementById("bulbasaur").checked;
-    let spanMokeponPlayer = document.getElementById("mokepon-player");
-
-    if(inputSquirtle == true) {
+    if(inputSquirtle.checked == true) {
         spanMokeponPlayer.innerHTML = "Squirtle"
-    }else if (inputCharmander == true) {
+    }else if (inputCharmander.checked == true) {
         spanMokeponPlayer.innerHTML = "Charmander"
-    }else if (inputBulbasaur == true) {
+    }else if (inputBulbasaur.checked == true) {
         spanMokeponPlayer.innerHTML = "Bulbasaur"
     }else{
         alert("Selecciona un Mokepon")
@@ -116,9 +118,6 @@ function rivalRandomAttack() {
 
 //Function Combat
 function combat(player, rival) {
-    let spanPlayerLives = document.getElementById("lives-player");
-    let spanRivalLives = document.getElementById("lives-rival");
-
     if(player == rival) {
         result = "Draw";
     }else if ((player == "Fire 🔥" && rival == "Ground 🌱") || (player == "Water 💧" && rival == "Fire 🔥") || (player == "Ground 🌱" && rival == "Water 💧")) {
@@ -138,10 +137,6 @@ function combat(player, rival) {
 
 //Función Añadir Texto
 function createMessage() {
-    let resultCombatSection = document.getElementById("result-combat")
-    let playerAttacksSection = document.getElementById("player-attacks")
-    let rivalAttacksSection = document.getElementById("rival-attacks")
-
     let newPlayerAttack = document.createElement("p")
     let newRivalAttack = document.createElement("p")
 
@@ -153,22 +148,13 @@ function createMessage() {
     rivalAttacksSection.appendChild(newRivalAttack)
 }
 
+
 //Función Añadir Texto
 function createMessageEnd(combatResult) {
-    let resultCombatSection = document.getElementById("result-combat")
-
     resultCombatSection.innerHTML = combatResult
-
-    let inputFire = document.getElementById("button-fire");
     inputFire.disabled = true
-
-    let inputWater = document.getElementById("button-water");
     inputWater.disabled = true
-
-    let inputGround = document.getElementById("button-ground");
     inputGround.disabled = true
-
-    let sectionReset = document.getElementById("reset");
     sectionReset.style.display = "block"
 }
 
