@@ -1,15 +1,9 @@
 const sectionSelectAttack = document.getElementById("attack");
 const sectionReset = document.getElementById("reset");
 const buttonMokeponType = document.getElementById("button-mokepon");
-const inputFire = document.getElementById("button-fire");
-const inputWater = document.getElementById("button-water");
-const inputGround = document.getElementById("button-ground");
 const inputReset = document.getElementById("button-reset");
 
 const sectionSelectMokepon = document.getElementById("pets");
-const inputSquirtle = document.getElementById("squirtle");
-const inputCharmander = document.getElementById("charmander");
-const inputBulbasaur = document.getElementById("bulbasaur");
 const spanMokeponPlayer = document.getElementById("mokepon-player");
 
 const spanMokeponRival = document.getElementById("mokepon-rival");
@@ -21,11 +15,21 @@ const resultCombatSection = document.getElementById("result-combat");
 const playerAttacksSection = document.getElementById("player-attacks");
 const rivalAttacksSection = document.getElementById("rival-attacks");
 const cardsContainer = document.getElementById("cardsContainer");
+const attacksContainer = document.getElementById("attacksContainer");
 
 let mokepones = [];
-let playerAttack;
+let playerAttack = [];
 let rivalAttack;
 let mokeponOption;
+let inputSquirtle;
+let inputCharmander;
+let inputBulbasaur;
+let mokeponPlayer;
+let mokeponAttacks;
+let inputFire;
+let inputWater;
+let inputGround;
+let buttons = [];
 let result;
 let playerLives = 3;
 let rivalLives = 3;
@@ -40,6 +44,7 @@ class Mokepon {
         this.ataques = []
     }
 }
+
 
 //Objeto squirtle
 let squirtle = new Mokepon('Squirtle', './assets/img/squirtle.png', 3);
@@ -90,12 +95,13 @@ function startGame() {
         `
 
         cardsContainer.innerHTML += mokeponOption
+
+        inputSquirtle = document.getElementById("Squirtle");
+        inputCharmander = document.getElementById("Charmander");
+        inputBulbasaur = document.getElementById("Bulbasaur");
     })
 
     buttonMokeponType.addEventListener("click", selectMokeponPlayer);
-    inputFire.addEventListener("click", fireAttack);
-    inputWater.addEventListener("click", waterAttack);
-    inputGround.addEventListener("click", groundAttack);
     inputReset.addEventListener("click", resetGame);
 }
 
@@ -109,15 +115,10 @@ function randomNumber(min, max) {
 
 //Selección Mokepon Rival
 function selectMokeponRival() {
-    let randomMokepon = randomNumber(1,3);
+    let randomMokepon = randomNumber(0, mokepones.length - 1);
 
-    if(randomMokepon == 1) {
-        spanMokeponRival.innerHTML = "Squirtle"
-    }else if(randomMokepon == 2) {
-        spanMokeponRival.innerHTML = "Charmander"
-    }else {
-        spanMokeponRival.innerHTML = "Bulbasaur"
-    }
+    spanMokeponRival.innerHTML = mokepones[randomMokepon].nombre;
+    attackSequence();
 }
 
 
@@ -127,37 +128,71 @@ function selectMokeponPlayer() {
     sectionSelectMokepon.style.display = "none"
 
     if(inputSquirtle.checked == true) {
-        spanMokeponPlayer.innerHTML = "Squirtle"
+        spanMokeponPlayer.innerHTML = inputSquirtle.id
+        mokeponPlayer = inputSquirtle.id
     }else if (inputCharmander.checked == true) {
-        spanMokeponPlayer.innerHTML = "Charmander"
+        spanMokeponPlayer.innerHTML = inputCharmander.id
+        mokeponPlayer = inputCharmander.id
     }else if (inputBulbasaur.checked == true) {
-        spanMokeponPlayer.innerHTML = "Bulbasaur"
+        spanMokeponPlayer.innerHTML = inputBulbasaur.id
+        mokeponPlayer = inputBulbasaur.id
     }else{
         alert("Selecciona un Mokepon")
     }
 
+    extractAttacks(mokeponPlayer);
     selectMokeponRival();
 }
 
 
-//Funcion Ataque Fuego
-function fireAttack() {
-    playerAttack = "Fire 🔥"
-    rivalRandomAttack()
+//Extraer Ataques Mokepones
+function extractAttacks(mokeponPlayer) {
+    let attacks;
+    for (let i = 0; i < mokepones.length; i++) {
+        if (mokeponPlayer === mokepones[i].nombre) {
+            attacks = mokepones[i].ataques
+        }
+        
+    }
+    showAttacks(attacks);
 }
 
 
-//Funcion Ataque Agua
-function waterAttack() {
-    playerAttack = "Water 💧"
-    rivalRandomAttack()
+//Mosstrar Botones de Ataques
+function showAttacks(attacks) {
+    attacks.forEach((ataque) => {
+        mokeponAttacks = `
+        <button id="${ataque.id}" class="button-attack BUTattack">${ataque.nombre}</button>
+        `
+        attacksContainer.innerHTML += mokeponAttacks
+
+    })
+
+    inputFire = document.getElementById("button-fire");
+    inputWater = document.getElementById("button-water");
+    inputGround = document.getElementById("button-ground");
+    buttons = document.querySelectorAll(".BUTattack")
 }
 
 
-//Funcion Ataque Tierra
-function groundAttack() {
-    playerAttack = "Ground 🌱"
-    rivalRandomAttack()
+function attackSequence() {
+    buttons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            if (e.target.textContent === "🔥") {
+                playerAttack.push("Fire")
+                console.log(playerAttack)
+                button.style.background = "#112F58"
+            } else if (e.target.textContent === "💧") {
+                playerAttack.push("Water")
+                console.log(playerAttack)
+                button.style.background = "#112F58"
+            } else {
+                playerAttack.push("Ground")
+                console.log(playerAttack)
+                button.style.background = "#112F58"
+            }
+        })
+    })
 }
 
 
