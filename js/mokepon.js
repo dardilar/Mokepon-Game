@@ -19,18 +19,23 @@ const attacksContainer = document.getElementById("attacksContainer");
 
 let mokepones = [];
 let playerAttack = [];
-let rivalAttack;
+let rivalAttack = [];
 let mokeponOption;
 let inputSquirtle;
 let inputCharmander;
 let inputBulbasaur;
 let mokeponPlayer;
 let mokeponAttacks;
+let mokeponRivalAttack;
 let inputFire;
 let inputWater;
 let inputGround;
 let buttons = [];
+let indexPlayerAttack;
+let indexRivalAttack;
 let result;
+let victoryPlayer = 0;
+let victoryRival = 0;
 let playerLives = 3;
 let rivalLives = 3;
 
@@ -108,17 +113,8 @@ function startGame() {
 
 //Función Número Aleatorio
 function randomNumber(min, max) {
-    let result = Math.floor(Math.random() * (max - min + 1) + 1);
+    let result = Math.floor(Math.random() * (max - min + 1) + 0);
     return result;
-}
-
-
-//Selección Mokepon Rival
-function selectMokeponRival() {
-    let randomMokepon = randomNumber(0, mokepones.length - 1);
-
-    spanMokeponRival.innerHTML = mokepones[randomMokepon].nombre;
-    attackSequence();
 }
 
 
@@ -158,7 +154,7 @@ function extractAttacks(mokeponPlayer) {
 }
 
 
-//Mosstrar Botones de Ataques
+//Mostrar Botones de Ataques
 function showAttacks(attacks) {
     attacks.forEach((ataque) => {
         mokeponAttacks = `
@@ -171,7 +167,7 @@ function showAttacks(attacks) {
     inputFire = document.getElementById("button-fire");
     inputWater = document.getElementById("button-water");
     inputGround = document.getElementById("button-ground");
-    buttons = document.querySelectorAll(".BUTattack")
+    buttons = document.querySelectorAll(".BUTattack");
 }
 
 
@@ -179,55 +175,89 @@ function attackSequence() {
     buttons.forEach((button) => {
         button.addEventListener("click", (e) => {
             if (e.target.textContent === "🔥") {
-                playerAttack.push("Fire")
+                playerAttack.push("Fire 🔥")
                 console.log(playerAttack)
                 button.style.background = "#112F58"
+                button.disabled = true
             } else if (e.target.textContent === "💧") {
-                playerAttack.push("Water")
+                playerAttack.push("Water 💧")
                 console.log(playerAttack)
                 button.style.background = "#112F58"
+                button.disabled = true
             } else {
-                playerAttack.push("Ground")
+                playerAttack.push("Ground 🌱")
                 console.log(playerAttack)
                 button.style.background = "#112F58"
+                button.disabled = true
             }
+            rivalRandomAttack()
         })
     })
 }
 
 
+//Selección Mokepon Rival
+function selectMokeponRival() {
+    let randomMokepon = randomNumber(0, mokepones.length - 1);
+    console.log(randomMokepon)
+
+    spanMokeponRival.innerHTML = mokepones[randomMokepon].nombre;
+    mokeponRivalAttack = mokepones[randomMokepon].ataques;
+    attackSequence();
+}
+
+
 //Función Ataque Rival
 function rivalRandomAttack() {
-    mokeponRivalAttack = randomNumber(1,3);
+    mokeponRivalAttack = randomNumber(0, mokeponRivalAttack.length - 1);
 
-    if(mokeponRivalAttack  == 1) {
-        rivalAttack = "Fire 🔥"
-    }else if(mokeponRivalAttack  == 2) {
-        rivalAttack = "Water 💧"
+    if(mokeponRivalAttack  == 0 || mokeponRivalAttack == 1) {
+        rivalAttack.push("Fire 🔥")
+    }else if(mokeponRivalAttack  == 3 || mokeponRivalAttack == 4) {
+        rivalAttack.push("Water 💧")
     }else {
-        rivalAttack = "Ground 🌱"
+        rivalAttack.push("Ground 🌱")
     }
+    console.log(rivalAttack)
+    startFight()
+}
 
-    combat(playerAttack, rivalAttack);
+
+function startFight() {
+    if (rivalAttack.length == 5) {
+        combat()
+    }
+}
+
+
+function indexBothOponents(player, rival) {
+    indexPlayerAttack = playerAttack[player];
+    indexRivalAttack = rivalAttack[rival];
 }
 
 
 //Function Combat
-function combat(player, rival) {
-    if(player == rival) {
-        result = "Draw";
-    }else if ((player == "Fire 🔥" && rival == "Ground 🌱") || (player == "Water 💧" && rival == "Fire 🔥") || (player == "Ground 🌱" && rival == "Water 💧")) {
-        result = "⭐You Won⭐"
-        rivalLives -= 1;
-        spanRivalLives.innerHTML = rivalLives;
-    }else{
-        result = "❌You Lost❌"
-        playerLives -= 1;
-        spanPlayerLives.innerHTML = playerLives;
+function combat() {
+
+    for (let i = 0; i < playerAttack.length; i++) {
+        if (playerAttack[i] === rivalAttack[i]) {
+            indexBothOponents(i, i)
+            result = "Draw";
+        }else if ((playerAttack[i] == "Fire 🔥" && rivalAttack[i] == "Ground 🌱") || (playerAttack[i] == "Water 💧" && rivalAttack[i] == "Fire 🔥") || (playerAttack[i] == "Ground 🌱" && rivalAttack[i] == "Water 💧")) {
+            indexBothOponents(i, i)
+            result = "⭐You Won⭐"
+            victoryPlayer += 1
+            spanPlayerLives.innerHTML = victoryPlayer
+        }else {
+            indexBothOponents(i, i)
+            result = "❌You Lost❌"
+            victoryRival += 1
+            spanRivalLives.innerHTML = victoryRival
+        }
+        createMessage()
     }
 
-    createMessage();
-    checkLives()
+    checkVictory()
 }
 
 
@@ -237,8 +267,8 @@ function createMessage() {
     let newRivalAttack = document.createElement("p")
 
     resultCombatSection.innerHTML = result
-    newPlayerAttack.innerHTML = `Tu Mokepon ataco con ${playerAttack}`
-    newRivalAttack.innerHTML = `El Mokepon rival ataco con ${rivalAttack}`
+    newPlayerAttack.innerHTML = `Tu Mokepon ataco con ${indexPlayerAttack}`
+    newRivalAttack.innerHTML = `El Mokepon rival ataco con ${indexRivalAttack}`
 
     playerAttacksSection.appendChild(newPlayerAttack)
     rivalAttacksSection.appendChild(newRivalAttack)
@@ -248,18 +278,17 @@ function createMessage() {
 //Función Añadir Texto
 function createMessageEnd(combatResult) {
     resultCombatSection.innerHTML = combatResult
-    inputFire.disabled = true
-    inputWater.disabled = true
-    inputGround.disabled = true
     sectionReset.style.display = "block"
 }
 
 
 //Función Revisar Vidas
-function checkLives() {
-    if(rivalLives == 0) {
+function checkVictory() {
+    if(victoryPlayer == victoryRival) {
+        createMessageEnd("🎭🎭🎭DRAW🎭🎭🎭") 
+    }else if (victoryPlayer > victoryRival) {
         createMessageEnd("⭐⭐⭐YOU WON THE DUEL⭐⭐⭐")
-    }else if (playerLives == 0) {
+    }else {
         createMessageEnd("❌❌❌YOU LOST THE DUEL❌❌❌")
     }
 }
