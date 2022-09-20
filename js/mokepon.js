@@ -46,21 +46,33 @@ let rivalLives = 3;
 let lienzo = map.getContext("2d");
 let intervalo;
 let backgroundMap = new Image()
+let heightFind;
+let widthMap = window.innerWidth - 20; 
+const maxMapWidth = 800
+
+if(widthMap > maxMapWidth) {
+    widthMap = maxMapWidth - 20
+}
+
+heightFind = (widthMap * 600) / 800
+
+map.width = widthMap
+map.height = heightFind
 
 backgroundMap.src = "/mokepon/assets/img/mokemap.png"
 
 
 //Clase Mokepon
 class Mokepon {
-    constructor(nombre, foto, vida, mapPhoto, x = 10, y = 10) {
+    constructor(nombre, foto, vida, mapPhoto) {
         this.nombre = nombre;
         this.foto = foto;
         this.vida = vida;
         this.ataques = [];
-        this.x = x;
-        this.y = y;
         this.width = 80;
         this.height = 80;
+        this.x = randomNumber(0, map.width - this.width);
+        this.y = randomNumber(0, map.height - this.height);
         this.photoMap = new Image();
         this.photoMap.src = mapPhoto;
         this.speedX = 0;
@@ -78,9 +90,9 @@ let squirtle = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/mokepon
 let charmander = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/mokepon/assets/img/headCha.png');
 let bulbasaur = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/mokepon/assets/img/headBulba.png');
 
-let squirtleEnemy = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/mokepon/assets/img/headSquirt.png', 300, 120);
-let charmanderEnemy = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/mokepon/assets/img/headCha.png', 380, 360);
-let bulbasaurEnemy = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/mokepon/assets/img/headBulba.png', 680, 250);
+let squirtleEnemy = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/mokepon/assets/img/headSquirt.png');
+let charmanderEnemy = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/mokepon/assets/img/headCha.png');
+let bulbasaurEnemy = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/mokepon/assets/img/headBulba.png');
 
 squirtle.ataques.push(
     //Objetos Literales
@@ -416,8 +428,6 @@ function pressKey(event) {
 
 
 function startMap() {
-    map.width = 800
-    map.height = 600
     mokeponPlayerObject = getObjectMokepon(mokeponPlayer)
     intervalo = setInterval(printCanvas, 50)
     window.addEventListener("keydown", pressKey)

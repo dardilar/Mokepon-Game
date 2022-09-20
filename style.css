@@ -19,13 +19,14 @@ body {
 
 .title {
     color: white;
-    margin: 30px;
+    margin-top: 30px ;
     font-size: 3.2rem;
     
 }
 
 .subtitle {
     color: white;
+    margin-top: 30px;
     margin-bottom: 40px;
     font-size: 2.4rem;
 }
@@ -155,8 +156,25 @@ input:checked + label {
     justify-content: center;
 }
 
+#view-map button {
+    margin: 5px;
+    width: 100px;
+    height: 60px;
+    font-size: 1.6rem;
+    color: white;
+    background-color: #065A9C;
+    border: 2px solid white;
+    border-radius: 50px;
+}
+
+#view-map button:hover {
+    background-color: white;
+    color: #065A9C;
+    border: none;
+}
+
 #map {
-    border: 2px solid whitesmoke;
+    margin-bottom: 20px;
 }
 
 @media (max-width: 960px) {
@@ -166,5 +184,13 @@ input:checked + label {
 
     .choose-attacks {
         flex-direction: column;
+    }
+}
+
+@media (max-width: 360px) {
+    #view-map div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
