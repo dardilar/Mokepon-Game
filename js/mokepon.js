@@ -17,14 +17,19 @@ const rivalAttacksSection = document.getElementById("rival-attacks");
 const cardsContainer = document.getElementById("cardsContainer");
 const attacksContainer = document.getElementById("attacksContainer");
 
+const sectionViewMap = document.getElementById("view-map");
+const map = document.getElementById("map");
+
 let mokepones = [];
 let playerAttack = [];
 let rivalAttack = [];
+let selectAttackRival = [];
 let mokeponOption;
 let inputSquirtle;
 let inputCharmander;
 let inputBulbasaur;
 let mokeponPlayer;
+let mokeponPlayerObject;
 let mokeponAttacks;
 let mokeponRivalAttack;
 let inputFire;
@@ -38,25 +43,55 @@ let victoryPlayer = 0;
 let victoryRival = 0;
 let playerLives = 3;
 let rivalLives = 3;
+let lienzo = map.getContext("2d");
+let intervalo;
+let backgroundMap = new Image()
+
+backgroundMap.src = "/mokepon/assets/img/mokemap.png"
 
 
 //Clase Mokepon
 class Mokepon {
-    constructor(nombre, foto, vida) {
+    constructor(nombre, foto, vida, mapPhoto, x = 10, y = 10) {
         this.nombre = nombre;
         this.foto = foto;
         this.vida = vida;
-        this.ataques = []
+        this.ataques = [];
+        this.x = x;
+        this.y = y;
+        this.width = 80;
+        this.height = 80;
+        this.photoMap = new Image();
+        this.photoMap.src = mapPhoto;
+        this.speedX = 0;
+        this.speedY = 0;
+    }
+
+    printMokepon() {
+        lienzo.drawImage(this.photoMap, this.x, this.y, this.width, this.height)
     }
 }
 
 
 //Objeto squirtle
-let squirtle = new Mokepon('Squirtle', './assets/img/squirtle.png', 3);
-let charmander = new Mokepon('Charmander', './assets/img/charmander.png', 3);
-let bulbasaur = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 3);
+let squirtle = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/mokepon/assets/img/headSquirt.png');
+let charmander = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/mokepon/assets/img/headCha.png');
+let bulbasaur = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/mokepon/assets/img/headBulba.png');
+
+let squirtleEnemy = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/mokepon/assets/img/headSquirt.png', 300, 120);
+let charmanderEnemy = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/mokepon/assets/img/headCha.png', 380, 360);
+let bulbasaurEnemy = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/mokepon/assets/img/headBulba.png', 680, 250);
 
 squirtle.ataques.push(
+    //Objetos Literales
+    {nombre: '💧', id: 'button-water'}, 
+    {nombre: '💧', id: 'button-water'}, 
+    {nombre: '💧', id: 'button-water'}, 
+    {nombre: '🔥', id: 'button-fire'}, 
+    {nombre: '🌱', id: 'button-ground'}, 
+)
+
+squirtleEnemy.ataques.push(
     //Objetos Literales
     {nombre: '💧', id: 'button-water'}, 
     {nombre: '💧', id: 'button-water'}, 
@@ -74,7 +109,25 @@ charmander.ataques.push(
     {nombre: '🌱', id: 'button-ground'},
 )
 
+charmanderEnemy.ataques.push(
+    //Objetos Literales
+    {nombre: '🔥', id: 'button-fire'},
+    {nombre: '🔥', id: 'button-fire'},
+    {nombre: '🔥', id: 'button-fire'},
+    {nombre: '💧', id: 'button-water'},
+    {nombre: '🌱', id: 'button-ground'},
+)
+
 bulbasaur.ataques.push(
+    //Objetos Literales
+    {nombre: '🌱', id: 'button-ground'},
+    {nombre: '🌱', id: 'button-ground'},
+    {nombre: '🌱', id: 'button-ground'},
+    {nombre: '💧', id: 'button-water'},
+    {nombre: '🔥', id: 'button-fire'},
+)
+
+bulbasaurEnemy.ataques.push(
     //Objetos Literales
     {nombre: '🌱', id: 'button-ground'},
     {nombre: '🌱', id: 'button-ground'},
@@ -88,6 +141,7 @@ mokepones.push(squirtle, charmander, bulbasaur);
 
 function startGame() {
     sectionSelectAttack.style.display = "none"
+    sectionViewMap.style.display = "none"
     sectionReset.style.display = "none"
 
     mokepones.forEach((mokepon) => {
@@ -113,16 +167,17 @@ function startGame() {
 
 //Función Número Aleatorio
 function randomNumber(min, max) {
-    let result = Math.floor(Math.random() * (max - min + 1) + 0);
+    let result = Math.floor(Math.random() * (max - min + 1) + min);
     return result;
+    
 }
 
 
 //Selección Mokepon Jugador
 function selectMokeponPlayer() {
-    sectionSelectAttack.style.display = "flex"
+    sectionViewMap.style.display = "flex"
     sectionSelectMokepon.style.display = "none"
-
+    
     if(inputSquirtle.checked == true) {
         spanMokeponPlayer.innerHTML = inputSquirtle.id
         mokeponPlayer = inputSquirtle.id
@@ -137,7 +192,7 @@ function selectMokeponPlayer() {
     }
 
     extractAttacks(mokeponPlayer);
-    selectMokeponRival();
+    startMap()
 }
 
 
@@ -197,23 +252,20 @@ function attackSequence() {
 
 
 //Selección Mokepon Rival
-function selectMokeponRival() {
-    let randomMokepon = randomNumber(0, mokepones.length - 1);
-    console.log(randomMokepon)
-
-    spanMokeponRival.innerHTML = mokepones[randomMokepon].nombre;
-    mokeponRivalAttack = mokepones[randomMokepon].ataques;
+function selectMokeponRival(enemy) {
+    spanMokeponRival.innerHTML = enemy.nombre;
+    mokeponRivalAttack = enemy.ataques;
     attackSequence();
 }
 
 
 //Función Ataque Rival
 function rivalRandomAttack() {
-    mokeponRivalAttack = randomNumber(0, mokeponRivalAttack.length - 1);
+    let mokeponRivalRandomAttack = randomNumber(0, mokeponRivalAttack.length - 1);
 
-    if(mokeponRivalAttack  == 0 || mokeponRivalAttack == 1) {
+    if(mokeponRivalRandomAttack  == 0 || mokeponRivalRandomAttack == 1) {
         rivalAttack.push("Fire 🔥")
-    }else if(mokeponRivalAttack  == 3 || mokeponRivalAttack == 4) {
+    }else if(mokeponRivalRandomAttack  == 3 || mokeponRivalRandomAttack == 4) {
         rivalAttack.push("Water 💧")
     }else {
         rivalAttack.push("Ground 🌱")
@@ -296,6 +348,112 @@ function checkVictory() {
 
 function resetGame() {
     location.reload()
+}
+
+
+function printCanvas() {
+    mokeponPlayerObject.x = mokeponPlayerObject.x + mokeponPlayerObject.speedX
+    mokeponPlayerObject.y = mokeponPlayerObject.y + mokeponPlayerObject.speedY
+    lienzo.clearRect(0, 0, map.width, map.height)
+    lienzo.drawImage(backgroundMap, 0, 0, map.width, map.height)
+    mokeponPlayerObject.printMokepon()
+    squirtleEnemy.printMokepon()
+    charmanderEnemy.printMokepon()
+    bulbasaurEnemy.printMokepon()
+
+    if (mokeponPlayerObject.speedX !== 0 || mokeponPlayerObject.speedY !== 0) {
+        reviewImpact(charmanderEnemy)
+        reviewImpact(squirtleEnemy)
+        reviewImpact(bulbasaurEnemy)
+    }
+}
+
+
+function moveRight() {
+    mokeponPlayerObject.speedX = 5
+}
+
+function moveLeft() {
+    mokeponPlayerObject.speedX = -5
+}
+
+function moveUp() {
+    mokeponPlayerObject.speedY = -5
+}
+
+function moveDown() {
+    mokeponPlayerObject.speedY = 5
+}
+
+function stopMovement() {
+    mokeponPlayerObject.speedX = 0;
+    mokeponPlayerObject.speedY = 0;
+}
+
+
+function pressKey(event) {
+    switch (event.key) {
+        case "ArrowUp":
+            moveUp()
+            break;
+        
+        case "ArrowDown":
+            moveDown()
+            break;
+
+        case "ArrowRight":
+        moveRight()
+        break;
+
+        case "ArrowLeft":
+        moveLeft()
+        break;
+    
+        default:
+            break;
+    }
+}
+
+
+function startMap() {
+    map.width = 800
+    map.height = 600
+    mokeponPlayerObject = getObjectMokepon(mokeponPlayer)
+    intervalo = setInterval(printCanvas, 50)
+    window.addEventListener("keydown", pressKey)
+    window.addEventListener("keyup", stopMovement)
+}
+
+
+function getObjectMokepon() {
+    for (let i = 0; i < mokepones.length; i++) {
+        if (mokeponPlayer === mokepones[i].nombre) {
+            return mokepones[i]
+        }
+    }
+}
+
+
+function reviewImpact(enemy) {
+    const upEnemy = enemy.y
+    const downEnemy = enemy.y + enemy.height
+    const rightEnemy = enemy.x + enemy.width
+    const leftEnemy = enemy.x
+
+    const upMokepon = mokeponPlayerObject.y
+    const downMokepon = mokeponPlayerObject.y + mokeponPlayerObject.height
+    const rightMokepon = mokeponPlayerObject.x + mokeponPlayerObject.width
+    const leftMokepon = mokeponPlayerObject.x
+
+    if (downMokepon < upEnemy || upMokepon > downEnemy || rightMokepon < leftEnemy || leftMokepon > rightEnemy) {
+        return;
+    }else {
+        stopMovement()
+        clearInterval(intervalo)
+        sectionSelectAttack.style.display = "flex"
+        sectionViewMap.style.display = "none"
+        selectMokeponRival(enemy);
+    }
 }
 
 window.addEventListener("load", startGame);

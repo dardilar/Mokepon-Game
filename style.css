@@ -149,6 +149,16 @@ input:checked + label {
     margin-bottom: 12px;
 }
 
+#view-map {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#map {
+    border: 2px solid whitesmoke;
+}
+
 @media (max-width: 960px) {
     .cards {
         flex-direction: column;
