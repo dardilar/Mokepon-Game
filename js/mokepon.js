@@ -20,6 +20,7 @@ const attacksContainer = document.getElementById("attacksContainer");
 const sectionViewMap = document.getElementById("view-map");
 const map = document.getElementById("map");
 
+let playerId = null
 let mokepones = [];
 let playerAttack = [];
 let rivalAttack = [];
@@ -186,6 +187,7 @@ function joinGame() {
                 res.text()
                     .then(function(respuesta) {
                         console.log(respuesta);
+                        playerId = respuesta
                     })
                 
             }
@@ -219,8 +221,23 @@ function selectMokeponPlayer() {
         alert("Selecciona un Mokepon")
     }
 
+    selectMokepon(mokeponPlayer)
+
     extractAttacks(mokeponPlayer);
     startMap()
+}
+
+
+function selectMokepon(mokeponPlayer) {
+    fetch(`http://localhost:8080/mokepon/${playerId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        }, 
+        body: JSON.stringify({
+            mokepon: mokeponPlayer
+        })
+    })
 }
 
 
@@ -385,6 +402,9 @@ function printCanvas() {
     lienzo.clearRect(0, 0, map.width, map.height)
     lienzo.drawImage(backgroundMap, 0, 0, map.width, map.height)
     mokeponPlayerObject.printMokepon()
+
+    sendPosition(mokeponPlayerObject.x, mokeponPlayerObject.y)
+
     squirtleEnemy.printMokepon()
     charmanderEnemy.printMokepon()
     bulbasaurEnemy.printMokepon()
@@ -394,6 +414,20 @@ function printCanvas() {
         reviewImpact(squirtleEnemy)
         reviewImpact(bulbasaurEnemy)
     }
+}
+
+
+function sendPosition(x, y) {
+    fetch(`http://localhost:8080/mokepon/${playerId}/position`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
 }
 
 
