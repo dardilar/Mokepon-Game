@@ -174,6 +174,22 @@ function startGame() {
 
     buttonMokeponType.addEventListener("click", selectMokeponPlayer);
     inputReset.addEventListener("click", resetGame);
+
+    joinGame()
+}
+
+
+function joinGame() {
+    fetch("http://localhost:8080/join")
+        .then(function(res) {
+            if (res.ok) {
+                res.text()
+                    .then(function(respuesta) {
+                        console.log(respuesta);
+                    })
+                
+            }
+        })
 }
 
 

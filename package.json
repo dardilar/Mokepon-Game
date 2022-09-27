@@ -1,0 +1,22 @@
+{
+  "name": "mokepon",
+  "version": "1.0.0",
+  "description": "This is a game created with the course from Platzi \"Nuevo Curso de Programación Básica\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dardilar/Mokepon-Game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dardilar/Mokepon-Game/issues"
+  },
+  "homepage": "https://github.com/dardilar/Mokepon-Game#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
