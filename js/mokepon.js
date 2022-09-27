@@ -60,12 +60,13 @@ heightFind = (widthMap * 600) / 800
 map.width = widthMap
 map.height = heightFind
 
-backgroundMap.src = "/mokepon/assets/img/mokemap.png"
+backgroundMap.src = "/assets/img/mokemap.png"
 
 
 //Clase Mokepon
 class Mokepon {
-    constructor(nombre, foto, vida, mapPhoto) {
+    constructor(nombre, foto, vida, mapPhoto, id = null) {
+        this.id = id
         this.nombre = nombre;
         this.foto = foto;
         this.vida = vida;
@@ -87,67 +88,39 @@ class Mokepon {
 
 
 //Objeto squirtle
-let squirtle = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/mokepon/assets/img/headSquirt.png');
-let charmander = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/mokepon/assets/img/headCha.png');
-let bulbasaur = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/mokepon/assets/img/headBulba.png');
+let squirtle = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/assets/img/headSquirt.png');
+let charmander = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/assets/img/headCha.png');
+let bulbasaur = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/assets/img/headBulba.png');
 
-let squirtleEnemy = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/mokepon/assets/img/headSquirt.png');
-let charmanderEnemy = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/mokepon/assets/img/headCha.png');
-let bulbasaurEnemy = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/mokepon/assets/img/headBulba.png');
-
-squirtle.ataques.push(
-    //Objetos Literales
+const SQUIRTE_ATTACKS = [
     {nombre: '💧', id: 'button-water'}, 
     {nombre: '💧', id: 'button-water'}, 
     {nombre: '💧', id: 'button-water'}, 
     {nombre: '🔥', id: 'button-fire'}, 
     {nombre: '🌱', id: 'button-ground'}, 
-)
+]
 
-squirtleEnemy.ataques.push(
-    //Objetos Literales
-    {nombre: '💧', id: 'button-water'}, 
-    {nombre: '💧', id: 'button-water'}, 
-    {nombre: '💧', id: 'button-water'}, 
-    {nombre: '🔥', id: 'button-fire'}, 
-    {nombre: '🌱', id: 'button-ground'}, 
-)
-
-charmander.ataques.push(
-    //Objetos Literales
+const CHARMANDER_ATTACKS = [
     {nombre: '🔥', id: 'button-fire'},
     {nombre: '🔥', id: 'button-fire'},
     {nombre: '🔥', id: 'button-fire'},
     {nombre: '💧', id: 'button-water'},
     {nombre: '🌱', id: 'button-ground'},
-)
+]
 
-charmanderEnemy.ataques.push(
-    //Objetos Literales
-    {nombre: '🔥', id: 'button-fire'},
-    {nombre: '🔥', id: 'button-fire'},
-    {nombre: '🔥', id: 'button-fire'},
-    {nombre: '💧', id: 'button-water'},
-    {nombre: '🌱', id: 'button-ground'},
-)
-
-bulbasaur.ataques.push(
-    //Objetos Literales
+const BULBASAUR_ATTACKS = [
     {nombre: '🌱', id: 'button-ground'},
     {nombre: '🌱', id: 'button-ground'},
     {nombre: '🌱', id: 'button-ground'},
     {nombre: '💧', id: 'button-water'},
     {nombre: '🔥', id: 'button-fire'},
-)
+]
 
-bulbasaurEnemy.ataques.push(
-    //Objetos Literales
-    {nombre: '🌱', id: 'button-ground'},
-    {nombre: '🌱', id: 'button-ground'},
-    {nombre: '🌱', id: 'button-ground'},
-    {nombre: '💧', id: 'button-water'},
-    {nombre: '🔥', id: 'button-fire'},
-)
+squirtle.ataques.push(...SQUIRTE_ATTACKS)
+
+charmander.ataques.push(...CHARMANDER_ATTACKS)
+
+bulbasaur.ataques.push(...BULBASAUR_ATTACKS)
 
 mokepones.push(squirtle, charmander, bulbasaur);
 
@@ -428,6 +401,33 @@ function sendPosition(x, y) {
             y
         })
     })
+        .then(function(res) {
+            if(res.ok) {
+                res.json()
+                    .then(function({enemies}) { 
+                        console.log(enemies)
+                        enemies.forEach((enemy) => {
+                            let mokeponEnemy = null
+                            const mokeponName = enemy.mokepon.name || ""
+                            if (mokeponName === "Squirtle") {
+                                mokeponEnemy = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/assets/img/headSquirt.png');
+                            }else if (mokeponName === "Charmander") {
+                                mokeponEnemy = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/assets/img/headCha.png');
+                            } else if (mokeponName === "Bulbasaur") {
+                                mokeponEnemy = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/assets/img/headBulba.png');
+                            }
+
+                            mokeponEnemy.x = enemy.x
+                            mokeponEnemy.y = enemy.y
+
+                            mokeponEnemy.printMokepon()
+                        })
+                        
+                        
+                        
+                    })
+            }
+        })
 }
 
 
