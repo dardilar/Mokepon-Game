@@ -21,7 +21,9 @@ const sectionViewMap = document.getElementById("view-map");
 const map = document.getElementById("map");
 
 let playerId = null
+let enemyId = null
 let mokepones = [];
+let mokeponesEnemies = [];
 let playerAttack = [];
 let rivalAttack = [];
 let selectAttackRival = [];
@@ -263,9 +265,43 @@ function attackSequence() {
                 button.style.background = "#112F58"
                 button.disabled = true
             }
-            rivalRandomAttack()
+
+            if (playerAttack.length === 5) {
+                sendAttacks()
+            }
         })
     })
+}
+
+
+function sendAttacks() {
+    fetch(`http://localhost:8080/mokepon/${playerId}/attacks`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            attacks: playerAttack
+        })
+    })
+
+    intervalo = setInterval(getAttacks, 50)
+}
+
+
+function getAttacks() {
+    fetch(`http://localhost:8080/mokepon/${enemyId}/attacks`)
+        .then(function(res) {
+            if(res.ok) {
+                res.json()
+                    .then(function({attacks}) {
+                        if(attacks.length === 5) {
+                            rivalAttack = attacks
+                            combat()
+                        }
+                    })
+            }
+        })
 }
 
 
@@ -308,6 +344,7 @@ function indexBothOponents(player, rival) {
 
 //Function Combat
 function combat() {
+    clearInterval(intervalo)
 
     for (let i = 0; i < playerAttack.length; i++) {
         if (playerAttack[i] === rivalAttack[i]) {
@@ -378,15 +415,11 @@ function printCanvas() {
 
     sendPosition(mokeponPlayerObject.x, mokeponPlayerObject.y)
 
-    squirtleEnemy.printMokepon()
-    charmanderEnemy.printMokepon()
-    bulbasaurEnemy.printMokepon()
 
-    if (mokeponPlayerObject.speedX !== 0 || mokeponPlayerObject.speedY !== 0) {
-        reviewImpact(charmanderEnemy)
-        reviewImpact(squirtleEnemy)
-        reviewImpact(bulbasaurEnemy)
-    }
+    mokeponesEnemies.forEach(function(mokepon) {
+        mokepon.printMokepon()
+        reviewImpact(mokepon)
+    })
 }
 
 
@@ -406,21 +439,21 @@ function sendPosition(x, y) {
                 res.json()
                     .then(function({enemies}) { 
                         console.log(enemies)
-                        enemies.forEach((enemy) => {
+                        mokeponesEnemies = enemies.map((enemy) => {
                             let mokeponEnemy = null
                             const mokeponName = enemy.mokepon.name || ""
                             if (mokeponName === "Squirtle") {
-                                mokeponEnemy = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/assets/img/headSquirt.png');
+                                mokeponEnemy = new Mokepon('Squirtle', './assets/img/squirtle.png', 5, '/assets/img/headSquirt.png', enemy.id);
                             }else if (mokeponName === "Charmander") {
-                                mokeponEnemy = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/assets/img/headCha.png');
+                                mokeponEnemy = new Mokepon('Charmander', './assets/img/charmander.png', 5, '/assets/img/headCha.png', enemy.id);
                             } else if (mokeponName === "Bulbasaur") {
-                                mokeponEnemy = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/assets/img/headBulba.png');
+                                mokeponEnemy = new Mokepon('Bulbasaur', './assets/img/bulbasaur.png', 5, '/assets/img/headBulba.png', enemy.id);
                             }
 
                             mokeponEnemy.x = enemy.x
                             mokeponEnemy.y = enemy.y
 
-                            mokeponEnemy.printMokepon()
+                            return mokeponEnemy
                         })
                         
                         
@@ -510,6 +543,9 @@ function reviewImpact(enemy) {
     }else {
         stopMovement()
         clearInterval(intervalo)
+
+        enemyId = enemy.id
+
         sectionSelectAttack.style.display = "flex"
         sectionViewMap.style.display = "none"
         selectMokeponRival(enemy);
