@@ -3,6 +3,9 @@ const cors = require("cors")
 
 const app = express()
 
+//192.168.0.4
+
+app.use(express.static("public"))
 app.use(cors())
 app.use(express.json())
 

@@ -180,9 +180,6 @@ function randomNumber(min, max) {
 
 //Selección Mokepon Jugador
 function selectMokeponPlayer() {
-    sectionViewMap.style.display = "flex"
-    sectionSelectMokepon.style.display = "none"
-    
     if(inputSquirtle.checked == true) {
         spanMokeponPlayer.innerHTML = inputSquirtle.id
         mokeponPlayer = inputSquirtle.id
@@ -194,7 +191,11 @@ function selectMokeponPlayer() {
         mokeponPlayer = inputBulbasaur.id
     }else{
         alert("Selecciona un Mokepon")
+        return
     }
+
+    sectionViewMap.style.display = "flex"
+    sectionSelectMokepon.style.display = "none"
 
     selectMokepon(mokeponPlayer)
 
